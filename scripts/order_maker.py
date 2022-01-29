@@ -43,3 +43,7 @@ url = pyqrcode.create(web_url)
 
 # Create and save the png file naming "myqr.png"
 url.png(os.path.join(target_dir, f'QR_{uuid}.png'), scale=6)
+
+comments = input("Add comments for this order:")
+with open("order_info.txt", 'a') as info:
+    info.write(f"{uuid} | {comments}\n")
