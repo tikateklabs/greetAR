@@ -42,8 +42,8 @@ video_file = input("Enter the video file path:")
 os.rename(patt_file, os.path.join(target_dir, f"{uuid}.patt"))
 os.rename(marker_file, os.path.join(target_dir, f"{uuid}.PNG"))
 os.rename(video_file, os.path.join(target_dir, f"{uuid}.mp4"))
-shutil.copy2("card_inside.docx", os.path.join(target_dir, "card_inside.docx"))
-shutil.copy2("card_outside.docx", os.path.join(target_dir, "card_outside.docx"))
+shutil.copy2("card_inside_border.docx", os.path.join(target_dir, "card_inside.docx"))
+shutil.copy2("card_outside_border.docx", os.path.join(target_dir, "card_outside.docx"))
 
 web_url = f"https://tikateklabs.com/greetAR/magic_window/{uuid}/view.html"
 # Generate QR code
