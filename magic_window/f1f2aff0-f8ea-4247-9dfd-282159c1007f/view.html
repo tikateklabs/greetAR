@@ -25,13 +25,15 @@
 
 
     <script>
-    var num = Math.floor(Math.random() * 10 + 1);
-    randomimage = "p" +num +".png";
-    document.querySelector('#test_img').setAttribute('src', 'p1.png')
-
-
-
-
+AFRAME.registerComponent("my-image-comp", {
+  init: function () {
+    this.a_image = document.querySelector("a-image");
+    setTimeout(() => {
+      this.a_image.setAttribute("src", "#my-image-next");
+      this.a_image.components.material.flushToDOM(true);
+    }, 5000);
+  },
+});
     </script>
 </head>
 <body>
@@ -39,17 +41,22 @@
 <a-scene id="scene" arjs='trackingMethod: best; debugUIEnabled: false;' vr-mode-ui="enabled: false" ar-template>
 
     <a-assets>
-        <img id="test_img">
-
-    </a-assets>
+    <img id="my-image" src="slider-bg.jpg" >
+    <img id="my-image-next" src="client.jpg" >
+  </a-assets>
 
 
     <!-- Greetings Video Marker -->
 
     <a-marker id="marker1" type='pattern' url='f1f2aff0-f8ea-4247-9dfd-282159c1007f.patt' >
         <a-image
-            rotation="90 0 0"
-            src="#test_img" width="2.5" height="2.5"></a-image>
+    my-image-comp
+    src="#my-image"
+    width="2"
+    height="2"
+    position="0 0 0"
+    rotation="90 0 0"
+  ></a-image>
 
     </a-marker>
 
