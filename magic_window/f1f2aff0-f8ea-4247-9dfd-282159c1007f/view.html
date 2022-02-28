@@ -25,28 +25,10 @@
 
 
     <script>
+    var num = Math.floor(Math.random() * 10 + 1);
+    randomimage = "p" +num +".png";
+    document.getElementById('test_img').src=randomImage;
 
-        // Greetings Video Handler
-
-        AFRAME.registerComponent('video-vidhandler', {
-            init: function () {
-                console.log('video init entered');
-                this.toggle = false;
-                this.vid = document.querySelector("#invitation");
-                this.vid.pause();
-            },
-            tick: function () {
-                if (this.el.object3D.visible == true) {
-                    if (!this.toggle) {
-                        this.toggle = true;
-                        this.vid.play();
-                    }
-                } else {
-                    this.toggle = false;
-                    this.vid.pause();
-                }
-            }
-        });
 
 
 
@@ -57,7 +39,7 @@
 <a-scene id="scene" arjs='trackingMethod: best; debugUIEnabled: false;' vr-mode-ui="enabled: false" ar-template>
 
     <a-assets>
-        <img id="test_img" src="client.jpg">
+        <img id="test_img">
 
     </a-assets>
 
@@ -66,7 +48,7 @@
 
     <a-marker id="marker1" type='pattern' url='f1f2aff0-f8ea-4247-9dfd-282159c1007f.patt' >
         <a-image
-            rotation="0 0 0"
+            rotation="180 0 0"
             src="#test_img"></a-image>
 
     </a-marker>
