@@ -25,11 +25,13 @@
 
 
     <script>
-    var num = Math.floor(Math.random() * 10 + 1);
-    randomimage = "p" +num +".png";
+
     AFRAME.registerComponent("my-image-comp", {
       init: function () {
+        var num = Math.floor(Math.random() * 10 + 1);
+        randomimage = "p" +num +".png";
         this.a_image = document.querySelector("a-image");
+        this.a_image.setAttribute("src", randomimage);
       },
     });
     </script>
@@ -39,7 +41,7 @@
 <a-scene id="scene" arjs='trackingMethod: best; debugUIEnabled: false;' vr-mode-ui="enabled: false" ar-template>
 
     <a-assets>
-    <img id="my-image" src=randomimage >
+    <img id="my-image">
   </a-assets>
 
 
