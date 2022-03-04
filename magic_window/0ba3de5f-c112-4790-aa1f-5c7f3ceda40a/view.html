@@ -52,13 +52,10 @@
 
     </script>
     <script>
-    const fs=require('fs')
-    const quotes_count = fs.readdirSync('../../images/quotes').length
-
     AFRAME.registerComponent("my-image-comp", {
       init: function () {
-        var num = Math.floor(Math.random() * quotes_count + 1);
-        randomimage = "../../images/quotes/" +num +".jpg";
+        var num = Math.floor(Math.random() * 10 + 1);
+        randomimage = num +".jpg";
         this.a_image = document.querySelector("a-image");
         this.a_image.setAttribute("src", randomimage);
       },
