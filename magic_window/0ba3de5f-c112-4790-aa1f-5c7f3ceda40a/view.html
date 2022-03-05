@@ -34,6 +34,7 @@
                 this.toggle = false;
                 this.vid = document.querySelector("#invitation");
                 this.vid.pause();
+                this.el.addEventListener("click",this.onClick.bind(this));
             },
             tick: function () {
                 if (this.el.object3D.visible == true) {
@@ -46,7 +47,7 @@
                     this.vid.pause();
                 }
             },
-            onClick:function() {
+            onClick: function() {
               if (this.el.object3D.visible == true) {
                     if (!this.toggle) {
                         this.toggle = true;
