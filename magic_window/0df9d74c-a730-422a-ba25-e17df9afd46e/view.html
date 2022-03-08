@@ -51,6 +51,16 @@
 
 
     </script>
+        <script>
+    AFRAME.registerComponent("my-image-comp", {
+      init: function () {
+        var num = Math.floor(Math.random() * 10 + 1);
+        randomimage = num +".jpg";
+        this.a_image = document.querySelector("a-image");
+        this.a_image.setAttribute("src", randomimage);
+      },
+    });
+    </script>
 </head>
 <body>
 
@@ -76,6 +86,16 @@
         <a-plane scale="2.3 2.0" position='0 0 0' rotation="-90 0 0" material='transparent:true;src:#invitation'
                  controls></a-plane>
         <!--<a-entity text="font: https://cdn.aframe.io/fonts/mozillavr.fnt; value: Fun Moments"></a-entity>-->
+    </a-marker>
+        <a-marker id="marker2" type='pattern' url='quotes_0df9d74c-a730-422a-ba25-e17df9afd46e.patt' >
+        <a-image
+            my-image-comp
+            src="#my-image"
+            width="2"
+            height="2"
+            position="0 0 0"
+            rotation="-90 0 0"
+        ></a-image>
     </a-marker>
 
 
