@@ -23,6 +23,8 @@ comments = input("Add comments for this order:")
 with open("order_info.txt", 'a') as info:
     info.write(f"{uuid} | {comments}\n")
 
+
+
 # Read in the file
 with open('template.html', 'r') as template_file:
     filedata = template_file.read()
