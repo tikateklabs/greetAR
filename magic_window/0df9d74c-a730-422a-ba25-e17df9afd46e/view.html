@@ -52,33 +52,6 @@
 
     </script>
         <script>
-
-        // Greetings Video Handler
-
-        AFRAME.registerComponent('video-vidhandler2', {
-            init: function () {
-                console.log('video init entered');
-                this.toggle = false;
-                this.vid = document.querySelector("#invitation2");
-                this.vid.pause();
-            },
-            tick: function () {
-                if (this.el.object3D.visible == true) {
-                    if (!this.toggle) {
-                        this.toggle = true;
-                        this.vid.play();
-                    }
-                } else {
-                    this.toggle = false;
-                    this.vid.pause();
-                }
-            }
-        });
-
-
-
-    </script>
-        <script>
     AFRAME.registerComponent("my-image-comp", {
       init: function () {
         var num = Math.floor(Math.random() * 10 + 1);
@@ -102,22 +75,18 @@
                playsinline controls>
             <source src="0df9d74c-a730-422a-ba25-e17df9afd46e.mp4">
         </video>
-        <video preload="none" id="invitation2" response-type="arraybuffer" loop="false" crossorigin webkit-playsinline
-               playsinline controls>
-            <source src="0df9d74c-a730-422a-ba25-e17df9afd46e.mp4">
-        </video>
 
     </a-assets>
 
 
     <!-- Greetings Video Marker -->
 
-    <a-marker id="marker1" type='pattern' url='0df9d74c-a730-422a-ba25-e17df9afd46e.patt' video-vidhandler2>
-        <!--<a-box position='0 0 0' material='color: red;'></a-box>-->
-        <a-plane scale="2.3 2.0" position='0 0 0' rotation="-90 0 0" material='transparent:true;src:#invitation'
-                 controls></a-plane>
-        <!--<a-entity text="font: https://cdn.aframe.io/fonts/mozillavr.fnt; value: Fun Moments"></a-entity>-->
-    </a-marker>
+<!--    <a-marker id="marker1" type='pattern' url='0df9d74c-a730-422a-ba25-e17df9afd46e.patt' video-vidhandler2>-->
+<!--        &lt;!&ndash;<a-box position='0 0 0' material='color: red;'></a-box>&ndash;&gt;-->
+<!--        <a-plane scale="2.3 2.0" position='0 0 0' rotation="-90 0 0" material='transparent:true;src:#invitation'-->
+<!--                 controls></a-plane>-->
+<!--        &lt;!&ndash;<a-entity text="font: https://cdn.aframe.io/fonts/mozillavr.fnt; value: Fun Moments"></a-entity>&ndash;&gt;-->
+<!--    </a-marker>-->
         <a-marker id="marker2" type='pattern' url='quotes_0df9d74c-a730-422a-ba25-e17df9afd46e.patt' >
         <a-image
             my-image-comp
