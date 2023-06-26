@@ -23,9 +23,7 @@
     <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.5/aframe/build/aframe-ar.js"></script>
 
     <script>
-
         // Greetings Video Handler
-
         AFRAME.registerComponent('video-vidhandler', {
             init: function () {
                 console.log('video init entered');
@@ -33,6 +31,7 @@
                 this.vid = document.querySelector("#invitation");
                 this.vid.pause();
                 this.el.addEventListener("click", this.onClick.bind(this));
+                this.loadVideo();
 
                 // Create a play button element
                 this.playButton = document.createElement("div");
@@ -52,17 +51,27 @@
                 // Play the video when the play button is clicked
                 this.playButton.addEventListener("click", this.playVideo.bind(this));
             },
-            tick: function () {
-                if (this.el.object3D.visible == true) {
-                    if (!this.toggle) {
-                        this.toggle = true;
+            loadVideo: function () {
+                var self = this;
+                var assetLoader = new THREE.VideoTextureLoader();
+                assetLoader.load(
+                    this.vid.currentSrc,
+                    function (texture) {
+                        self.vid.setAttribute("material", "src", texture);
+                        self.vid.play();
+                    },
+                    function (xhr) {
+                        // On progress
+                        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+                    },
+                    function (err) {
+                        // On error
+                        console.error("Error loading video: " + err);
                     }
-                } else {
-                    this.toggle = false;
-                }
+                );
             },
-            onClick: function() {
-              if (this.el.object3D.visible == true) {
+            onClick: function () {
+                if (this.el.object3D.visible == true) {
                     if (!this.toggle) {
                         this.toggle = true;
                         this.playButton.style.display = "none";
@@ -73,27 +82,26 @@
                     this.vid.pause();
                 }
             },
-            showPlayButton: function() {
-              this.playButton.style.display = "block";
+            showPlayButton: function () {
+                this.playButton.style.display = "block";
             },
-            hidePlayButton: function() {
-              this.playButton.style.display = "none";
-            },
-            playVideo: function() {
-              if (!this.toggle) {
-                this.toggle = true;
+            hidePlayButton: function () {
                 this.playButton.style.display = "none";
-                this.vid.play();
-              }
+            },
+            playVideo: function () {
+                if (!this.toggle) {
+                    this.toggle = true;
+                    this.playButton.style.display = "none";
+                    this.vid.play();
+                }
             }
         });
-
     </script>
     <script>
         AFRAME.registerComponent("my-image-comp", {
             init: function () {
                 var num = Math.floor(Math.random() * 10 + 1);
-                randomimage = num +".jpg";
+                randomimage = num + ".jpg";
                 this.a_image = document.querySelector("a-image");
                 this.a_image.setAttribute("src", randomimage);
             },
@@ -109,9 +117,8 @@
 
         <!-- Greetings Video -->
 
-        <video preload="none" id="invitation" response-type="arraybuffer" loop="false" crossorigin webkit-playsinline
-               playsinline controls>
-            <source src="0ba3de5f-c112-4790-aa1f-5c7f3ceda40a.mp4">
+        <video preload="auto" id="invitation" loop="false" webkit-playsinline playsinline controls>
+            <source src="0ba3de5f-c112-4790-aa1f-5c7f3ceda40a.mp4" type="video/mp4">
         </video>
 
     </a-assets>
@@ -125,15 +132,8 @@
                  controls></a-plane>
         <!--<a-entity text="font: https://cdn.aframe.io/fonts/mozillavr.fnt; value: Fun Moments"></a-entity>-->
     </a-marker>
-    <a-marker id="marker2" type='pattern' url='pattern-mail.patt' >
-        <a-image
-            my-image-comp
-            src="#my-image"
-            width="2"
-            height="2"
-            position="0 0 0"
-            rotation="-90 0 0"
-        ></a-image>
+    <a-marker id="marker2" type='pattern' url='pattern-mail.patt'>
+        <a-image my-image-comp src="#my-image" width="2" height="2" position="0 0 0" rotation="-90 0 0"></a-image>
     </a-marker>
 
 
