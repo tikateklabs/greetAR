@@ -19,11 +19,13 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"
           id="bootstrap-css">
 
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.3.0/aframe/build/aframe-ar.js"></script>
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.5/aframe/build/aframe-ar.js"></script>
 
     <script>
+
         // Greetings Video Handler
+
         AFRAME.registerComponent('video-vidhandler', {
             init: function () {
                 console.log('video init entered');
@@ -32,29 +34,35 @@
                 this.vid.pause();
                 this.el.addEventListener("click", this.onClick.bind(this));
 
-                // Check if video source is available
-                if (this.vid.hasAttribute("src")) {
-                    // Create a play button element
-                    this.playButton = document.createElement("div");
-                    this.playButton.setAttribute("class", "play-button");
-                    this.playButton.innerHTML = "Play";
-                    this.el.appendChild(this.playButton);
+                // Create a play button element
+                this.playButton = document.createElement("div");
+                this.playButton.setAttribute("class", "play-button");
+                this.playButton.innerHTML = "Play";
+                document.body.appendChild(this.playButton);
 
-                    // Hide the play button initially
-                    this.playButton.style.display = "none";
+                // Hide the play button initially
+                this.playButton.style.display = "none";
 
-                    // Show the play button when the marker is visible
-                    this.el.addEventListener("markerFound", this.showPlayButton.bind(this));
+                // Show the play button when the marker is visible
+                this.el.addEventListener("markerFound", this.showPlayButton.bind(this));
 
-                    // Hide the play button when the marker is not visible
-                    this.el.addEventListener("markerLost", this.hidePlayButton.bind(this));
+                // Hide the play button when the marker is not visible
+                this.el.addEventListener("markerLost", this.hidePlayButton.bind(this));
 
-                    // Play the video when the play button is clicked
-                    this.playButton.addEventListener("click", this.playVideo.bind(this));
+                // Play the video when the play button is clicked
+                this.playButton.addEventListener("click", this.playVideo.bind(this));
+            },
+            tick: function () {
+                if (this.el.object3D.visible == true) {
+                    if (!this.toggle) {
+                        this.toggle = true;
+                    }
+                } else {
+                    this.toggle = false;
                 }
             },
-            onClick: function () {
-                if (this.el.object3D.visible == true) {
+            onClick: function() {
+              if (this.el.object3D.visible == true) {
                     if (!this.toggle) {
                         this.toggle = true;
                         this.playButton.style.display = "none";
@@ -65,43 +73,45 @@
                     this.vid.pause();
                 }
             },
-            showPlayButton: function () {
-                this.playButton.style.display = "block";
+            showPlayButton: function() {
+              this.playButton.style.display = "block";
             },
-            hidePlayButton: function () {
+            hidePlayButton: function() {
+              this.playButton.style.display = "none";
+            },
+            playVideo: function() {
+              if (!this.toggle) {
+                this.toggle = true;
                 this.playButton.style.display = "none";
-            },
-            playVideo: function () {
-                if (!this.toggle) {
-                    this.toggle = true;
-                    this.playButton.style.display = "none";
-                    this.vid.play();
-                }
+                this.vid.play();
+              }
             }
         });
+
     </script>
     <script>
         AFRAME.registerComponent("my-image-comp", {
             init: function () {
                 var num = Math.floor(Math.random() * 10 + 1);
-                randomimage = num + ".jpg";
+                randomimage = num +".jpg";
                 this.a_image = document.querySelector("a-image");
                 this.a_image.setAttribute("src", randomimage);
             },
         });
     </script>
 </head>
-<body style="margin: 0; overflow: hidden;">
+<body>
 
-<a-scene id="scene" arjs="sourceType: webcam; debugUIEnabled: false;" vr-mode-ui="enabled: false">
+<a-scene id="scene" arjs='trackingMethod: best; debugUIEnabled: false;' vr-mode-ui="enabled: false" ar-template>
 
     <a-assets>
         <img id="my-image">
 
         <!-- Greetings Video -->
 
-        <video id="invitation" preload="auto" loop="false" webkit-playsinline playsinline controls>
-            <source src="0ba3de5f-c112-4790-aa1f-5c7f3ceda40a.mp4" type="video/mp4">
+        <video preload="none" id="invitation" response-type="arraybuffer" loop="false" crossorigin webkit-playsinline
+               playsinline controls>
+            <source src="0ba3de5f-c112-4790-aa1f-5c7f3ceda40a.mp4">
         </video>
 
     </a-assets>
@@ -109,12 +119,21 @@
 
     <!-- Greetings Video Marker -->
 
-    <a-marker id="marker1" type="pattern" url="0ba3de5f-c112-4790-aa1f-5c7f3ceda40a.patt" video-vidhandler>
-        <a-plane scale="2.3 2.0" position="0 0 0" rotation="-90 0 0" material="transparent:true;src:#invitation"
+    <a-marker id="marker1" type='pattern' url='0ba3de5f-c112-4790-aa1f-5c7f3ceda40a.patt' video-vidhandler>
+        <!--<a-box position='0 0 0' material='color: red;'></a-box>-->
+        <a-plane scale="2.3 2.0" position='0 0 0' rotation="-90 0 0" material='transparent:true;src:#invitation'
                  controls></a-plane>
+        <!--<a-entity text="font: https://cdn.aframe.io/fonts/mozillavr.fnt; value: Fun Moments"></a-entity>-->
     </a-marker>
-    <a-marker id="marker2" type="pattern" url="pattern-mail.patt">
-        <a-image my-image-comp src="#my-image" width="2" height="2" position="0 0 0" rotation="-90 0 0"></a-image>
+    <a-marker id="marker2" type='pattern' url='pattern-mail.patt' >
+        <a-image
+            my-image-comp
+            src="#my-image"
+            width="2"
+            height="2"
+            position="0 0 0"
+            rotation="-90 0 0"
+        ></a-image>
     </a-marker>
 
 
