@@ -4,37 +4,51 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1NW62GX9W7"></script>
     <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'G-1NW62GX9W7');
-
+      gtag('config', 'G-1NW62GX9W7');
     </script>
 
-    <title> Greet AR 0ba3de5f-c112-4790-aa1f-5c7f3ceda40a</title>
-    <meta name="viewport" content="width=device-width,height=device-height">
+    <title>Greet AR 0ba3de5f-c112-4790-aa1f-5c7f3ceda40a</title>
+    <meta name="viewport" content="width=device-width, height=device-height">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"
           id="bootstrap-css">
 
-    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.5/aframe/build/aframe-ar.js"></script>
-
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.3.0/aframe/build/aframe-ar.js"></script>
 
     <script>
-
         // Greetings Video Handler
-
         AFRAME.registerComponent('video-vidhandler', {
             init: function () {
                 console.log('video init entered');
                 this.toggle = false;
                 this.vid = document.querySelector("#invitation");
                 this.vid.pause();
-                this.el.addEventListener("click",this.onClick.bind(this));
+                this.el.addEventListener("click", this.onClick.bind(this));
+
+                // Create a play button element
+                this.playButton = document.createElement("div");
+                this.playButton.setAttribute("class", "play-button");
+                this.playButton.innerHTML = "Play";
+                document.body.appendChild(this.playButton);
+
+                // Hide the play button initially
+                this.playButton.style.display = "none";
+
+                // Show the play button when the marker is visible
+                this.el.addEventListener("markerFound", this.showPlayButton.bind(this));
+
+                // Hide the play button when the marker is not visible
+                this.el.addEventListener("markerLost", this.hidePlayButton.bind(this));
+
+                // Play the video when the play button is clicked
+                this.playButton.addEventListener("click", this.playVideo.bind(this));
             },
             tick: function () {
                 if (this.el.object3D.visible == true) {
@@ -47,8 +61,8 @@
                     this.vid.pause();
                 }
             },
-            onClick: function() {
-              if (this.el.object3D.visible == true) {
+            onClick: function () {
+                if (this.el.object3D.visible == true) {
                     if (!this.toggle) {
                         this.toggle = true;
                         this.vid.play();
@@ -57,26 +71,36 @@
                     this.toggle = false;
                     this.vid.pause();
                 }
+            },
+            showPlayButton: function () {
+                this.playButton.style.display = "block";
+            },
+            hidePlayButton: function () {
+                this.playButton.style.display = "none";
+            },
+            playVideo: function () {
+                if (!this.toggle) {
+                    this.toggle = true;
+                    this.vid.play();
+                    this.playButton.style.display = "none";
+                }
             }
         });
-
-
-
     </script>
     <script>
-    AFRAME.registerComponent("my-image-comp", {
-      init: function () {
-        var num = Math.floor(Math.random() * 10 + 1);
-        randomimage = num +".jpg";
-        this.a_image = document.querySelector("a-image");
-        this.a_image.setAttribute("src", randomimage);
-      },
-    });
+        AFRAME.registerComponent("my-image-comp", {
+            init: function () {
+                var num = Math.floor(Math.random() * 10 + 1);
+                randomimage = num + ".jpg";
+                this.a_image = document.querySelector("a-image");
+                this.a_image.setAttribute("src", randomimage);
+            },
+        });
     </script>
 </head>
 <body>
 
-<a-scene id="scene" arjs='trackingMethod: best; debugUIEnabled: false;' vr-mode-ui="enabled: false" ar-template>
+<a-scene id="scene" arjs="trackingMethod: best; debugUIEnabled: false;" vr-mode-ui="enabled: false" ar-template>
 
     <a-assets>
         <img id="my-image">
@@ -93,13 +117,13 @@
 
     <!-- Greetings Video Marker -->
 
-    <a-marker id="marker1" type='pattern' url='0ba3de5f-c112-4790-aa1f-5c7f3ceda40a.patt' video-vidhandler>
+    <a-marker id="marker1" type="pattern" url="0ba3de5f-c112-4790-aa1f-5c7f3ceda40a.patt" video-vidhandler>
         <!--<a-box position='0 0 0' material='color: red;'></a-box>-->
-        <a-plane scale="2.3 2.0" position='0 0 0' rotation="-90 0 0" material='transparent:true;src:#invitation'
+        <a-plane scale="2.3 2.0" position="0 0 0" rotation="-90 0 0" material="transparent:true;src:#invitation"
                  controls></a-plane>
         <!--<a-entity text="font: https://cdn.aframe.io/fonts/mozillavr.fnt; value: Fun Moments"></a-entity>-->
     </a-marker>
-    <a-marker id="marker2" type='pattern' url='pattern-mail.patt' >
+    <a-marker id="marker2" type="pattern" url="pattern-mail.patt">
         <a-image
             my-image-comp
             src="#my-image"
@@ -117,6 +141,19 @@
 
 </a-scene>
 
+<style>
+    .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 10px 20px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+    }
+</style>
 
 </body>
 </html>
