@@ -32,39 +32,32 @@
                 this.vid.pause();
                 this.el.addEventListener("click", this.onClick.bind(this));
 
-                // Create a play button element
-                this.playButton = document.createElement("div");
-                this.playButton.setAttribute("class", "play-button");
-                this.playButton.innerHTML = "Play";
-                document.body.appendChild(this.playButton);
+                // Check if video source is available
+                if (this.vid.hasAttribute("src")) {
+                    // Create a play button element
+                    this.playButton = document.createElement("div");
+                    this.playButton.setAttribute("class", "play-button");
+                    this.playButton.innerHTML = "Play";
+                    this.el.appendChild(this.playButton);
 
-                // Hide the play button initially
-                this.playButton.style.display = "none";
+                    // Hide the play button initially
+                    this.playButton.style.display = "none";
 
-                // Show the play button when the marker is visible
-                this.el.addEventListener("markerFound", this.showPlayButton.bind(this));
+                    // Show the play button when the marker is visible
+                    this.el.addEventListener("markerFound", this.showPlayButton.bind(this));
 
-                // Hide the play button when the marker is not visible
-                this.el.addEventListener("markerLost", this.hidePlayButton.bind(this));
+                    // Hide the play button when the marker is not visible
+                    this.el.addEventListener("markerLost", this.hidePlayButton.bind(this));
 
-                // Play the video when the play button is clicked
-                this.playButton.addEventListener("click", this.playVideo.bind(this));
-            },
-            tick: function () {
-                if (this.el.object3D.visible == true) {
-                    if (!this.toggle) {
-                        this.toggle = true;
-                        this.vid.play();
-                    }
-                } else {
-                    this.toggle = false;
-                    this.vid.pause();
+                    // Play the video when the play button is clicked
+                    this.playButton.addEventListener("click", this.playVideo.bind(this));
                 }
             },
             onClick: function () {
                 if (this.el.object3D.visible == true) {
                     if (!this.toggle) {
                         this.toggle = true;
+                        this.playButton.style.display = "none";
                         this.vid.play();
                     }
                 } else {
@@ -81,8 +74,8 @@
             playVideo: function () {
                 if (!this.toggle) {
                     this.toggle = true;
-                    this.vid.play();
                     this.playButton.style.display = "none";
+                    this.vid.play();
                 }
             }
         });
@@ -107,7 +100,7 @@
 
         <!-- Greetings Video -->
 
-        <video id="invitation" preload="auto" loop="false" crossorigin webkit-playsinline playsinline controls>
+        <video id="invitation" preload="auto" loop="false" webkit-playsinline playsinline controls>
             <source src="0ba3de5f-c112-4790-aa1f-5c7f3ceda40a.mp4" type="video/mp4">
         </video>
 
